@@ -1,4 +1,4 @@
-
+Phones = new Mongo.Collection("phones");
 
 if (Meteor.isClient) {
 
@@ -25,6 +25,26 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.sendText.phones = function(){
+    return Phones.find({});
+  }
+
+  Template.sendText.events({
+    'click button': function(event, template){
+      message = template.find("input[name=message]");
+      nameSelected = template.find("input[name=firstName]:checked");
+      console.log(nameSelected.value);
+      console.log(message.value);
+      person = Phones.findOne({name:nameSelected.value});
+      console.log(person.number);
+      Meteor.call('sendText',message.value, person.number,  function(err,data){
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+  });
+
   Template.seeResponse.events({
     'click button': function() {
       console.log(Session.get('response'));
@@ -37,11 +57,11 @@ if (Meteor.isServer) {
   var twilio = Twilio("ACa9fe3af591e922c3f6b44ad50a9f6228","d512a624ac43c371cd8bff2546c6c6b3");
 
   Meteor.methods({
-    'sendText': function sendText(){
+    'sendText': function sendText(bodyText, phoneNumber){
       twilio.sendMessage({
-        to:'+15038418527',
+        to:phoneNumber,
         from:'+15032134742',
-        body:'Craig sent this from the web.'
+        body:bodyText
       }, function(err, responseData){
 
         if (!err) {
@@ -54,6 +74,8 @@ if (Meteor.isServer) {
   });
 
   Meteor.startup(function () {
-    // code to run on server at startup
+    Phones.remove({});
+    Phones.insert({name:"Michael", number:"+16175195801"});
+    Phones.insert({name:"Craig", number:"+15038418527"});
   });
 }

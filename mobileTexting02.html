@@ -16,9 +16,18 @@
 
 <template name="sendText">
 	<form>
-		Text to send: <input type="text" name="message">
-		<input type="submit" id="submit">
+		Text to send:<br>
+		 <input type="text" name="message"><br>
+		Send text to:<br>
+		{{#each phones}}
+			{{> phone}}
+		{{/each}}
 	</form>
+	<button>Send Text</button>
+</template>
+
+<template name = "phone">
+	<input type="radio" name="firstName" value={{name}}>{{name}}<br>
 </template>
 
 <template name="seeResponse">
