@@ -1,0 +1,26 @@
+<head>
+  <title>mobileTexting02</title>
+</head>
+
+<body>
+  <h1>Send a text over the web!</h1>
+
+  {{> sendText}}
+  <!-- {{> seeResponse}} -->
+</body>
+
+<template name="hello">
+<!--   <button>Send Message</button>
+  <p>You've pressed the button {{counter}} times.</p> -->
+</template>
+
+<template name="sendText">
+	<form>
+		Text to send: <input type="text" name="message">
+		<input type="submit" id="submit">
+	</form>
+</template>
+
+<template name="seeResponse">
+	<button>See Response</button>
+</template>
